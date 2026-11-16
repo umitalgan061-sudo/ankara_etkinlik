@@ -47,7 +47,7 @@ Bu sitelerin tümü için herkese açık, belgelenmiş bir etkinlik API'si doğr
     npm install
     npm run dev
 
-Tarayıcıdan aç:
+Ayrı bir Vite/React ön yüzü 4173 portunda çalışıyorsa CORS_ORIGIN değerine o adresi ekleyin. Birden fazla adres virgülle ayrılır.\n\nTarayıcıdan aç:
 
 - Web arayüzü: http://localhost:4000
 - Sağlık kontrolü: http://localhost:4000/api/health
