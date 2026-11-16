@@ -74,10 +74,10 @@ export function normalizeEvent(input) {
   const price = priceValue === "" || priceValue === null || priceValue === undefined
     ? null : Number(priceValue);
   const url = extractFirst(input.url, input.eventUrl, input.pageUrl, input.ticketUrl, input.link);
-  const day = startAt.slice(0, 10);
+  const startMinute = startAt.slice(0, 16);
   const fingerprintText = [
     slugForFingerprint(title),
-    day,
+    startMinute,
     slugForFingerprint(venue || district || city)
   ].join("|");
   const fingerprint = createHash("sha1").update(fingerprintText).digest("hex").slice(0, 20);
@@ -102,7 +102,7 @@ export function normalizeEvent(input) {
     longitude: Number.isFinite(longitude) && longitude !== 0 ? longitude : null,
     price: Number.isFinite(price) ? price : null,
     currency: cleanText(input.currency) || "TRY",
-    isFree: input.isFree === true || input.is_free === true || input.free === true || Number(price) === 0,
+    isFree: input.isFree === true || input.is_free === true || input.free === true || (Number.isFinite(price) && price === 0),
     imageUrl: extractFirst(input.imageUrl, input.image, input.posterUrl, input.poster, input.cover),
     url,
     attribution: cleanText(input.attribution) || cleanText(input.sourceLabel || source),
