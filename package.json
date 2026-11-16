@@ -1,0 +1,22 @@
+{
+  "name": "ankara-etkinlik-toplayici",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Ankara etkinliklerini çoklu kaynaktan toplayan API ve web arayüzü",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "fast-xml-parser": "^4.5.3",
+    "helmet": "^8.1.0"
+  }
+}
