@@ -22,7 +22,7 @@ export function stripHtml(value) {
 
 export function parseDate(value) {
   if (!value) return null;
-  const dateOnly = typeof value === "string" && /^\\d{4}-\\d{2}-\\d{2}$/.test(value);
+  const dateOnly = typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value);
   const date = value instanceof Date
     ? value
     : new Date(dateOnly ? value + "T00:00:00+03:00" : value);
