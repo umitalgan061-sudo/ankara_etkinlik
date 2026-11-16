@@ -18,5 +18,7 @@ jobs:
           node-version: 20
       - name: Bağımlılıkları yükle
         run: npm install
+      - name: JavaScript sözdizimini denetle
+        run: npm run check
       - name: Testleri çalıştır
         run: npm test
