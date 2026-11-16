@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101a2b">
+  <title>Ankara Etkinlikleri</title>
+  <meta name="description" content="Ankara'da gerçekleşen ve yaklaşan etkinlikleri farklı kaynaklardan keşfedin.">
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Ankara Etkinlikleri ana sayfa">
+      <span class="brand-mark">A</span>
+      <span>Ankara<span class="brand-light">Etkinlik</span></span>
+    </a>
+    <div class="topbar-right"><span class="live-dot"></span><span>Çoklu kaynak etkinlik akışı</span></div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <p class="eyebrow">ŞEHRİN AJANDASI</p>
+      <h1>Ankara'da <span>ne var?</span></h1>
+      <p class="hero-copy">Konserden tiyatroya, atölyeden fuara: farklı kaynaklardaki etkinlikleri tek yerde keşfet.</p>
+      <form id="filters" class="filters">
+        <label class="search-field">
+          <span>Etkinlik, sanatçı veya mekân</span>
+          <input id="q" type="search" placeholder="Örn. caz, tiyatro, CSO Ada">
+        </label>
+        <label>
+          <span>Başlangıç</span>
+          <input id="from" type="date">
+        </label>
+        <label>
+          <span>Bitiş</span>
+          <input id="to" type="date">
+        </label>
+        <label>
+          <span>Kategori</span>
+          <select id="category">
+            <option value="">Tüm kategoriler</option>
+            <option>Müzik</option>
+            <option>Tiyatro</option>
+            <option>Stand-up / Komedi</option>
+            <option>Sergi / Sanat</option>
+            <option>Spor</option>
+            <option>Çocuk ve Aile</option>
+            <option>Festival</option>
+            <option>Atölye / Eğitim</option>
+            <option>Fuar / Kongre</option>
+          </select>
+        </label>
+        <button class="primary-button" type="submit">Etkinlikleri bul</button>
+      </form>
+    </section>
+
+    <section class="status-row">
+      <div>
+        <div class="section-kicker">ANKARA ETKİNLİK TAKVİMİ</div>
+        <h2 id="result-title">Yaklaşan etkinlikler</h2>
+        <p id="result-meta" class="muted">Kaynaklardan veri alınıyor…</p>
+      </div>
+      <button id="refresh" class="ghost-button" type="button">↻ Yenile</button>
+    </section>
+
+    <section id="source-strip" class="source-strip" aria-label="Veri kaynakları"></section>
+    <section id="message" class="message" role="status" aria-live="polite"></section>
+    <section id="events" class="event-grid" aria-live="polite"></section>
+    <div class="load-more-wrap"><button id="load-more" class="ghost-button hidden" type="button">Daha fazla etkinlik göster</button></div>
+
+    <section class="source-note">
+      <strong>Veri kaynakları hakkında</strong>
+      <p>Etkinlik bilgileri kaynak sağlayıcıların herkese açık içeriklerinden veya yetkili API bağlantılarından alınır. Tarih, fiyat ve kontenjan değişebilir. Bilet işlemleri ilgili sağlayıcının sayfasında tamamlanır. WhatsMood kayıtlarında kaynak atfı korunur.</p>
+      <a href="/api/sources" target="_blank" rel="noreferrer">Kaynak bağlantı durumlarını görüntüle →</a>
+    </section>
+  </main>
+
+  <footer class="footer">Ankara Etkinlik Toplayıcı · Kaynak ve tarih bilgilerini etkinlik detayında kontrol edin.</footer>
+</body>
+</html>
