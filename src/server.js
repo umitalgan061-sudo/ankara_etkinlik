@@ -1,11 +1,14 @@
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { config } from "./config.js";
 import { deduplicateEvents } from "./normalization.js";
 import { activeAdapters, sourceCatalog, unconnectedSources } from "./sources/index.js";
 
 const app = express();
+const publicDirectory = fileURLToPath(new URL("../public/", import.meta.url));
 const cache = new Map();
 const requestCounters = new Map();
 
@@ -33,7 +36,7 @@ app.use(cors({
   }
 }));
 app.use(express.json({ limit: "1mb" }));
-app.use(express.static("public"));
+app.use(express.static(publicDirectory));
 
 function todayInIstanbul() {
   return new Intl.DateTimeFormat("en-CA", {
@@ -156,7 +159,6 @@ app.get("/api/health", (_req, res) => {
 });
 
 app.get("/api/sources", (_req, res) => {
-  const runtime = new Map(activeAdapters.map((item) => [item.id, item.configured]));
   const items = [
     ...sourceCatalog.map((item) => ({
       ...item,
@@ -193,6 +195,8 @@ app.get("/api/events", async (req, res) => {
     const category = String(req.query.category || "").trim().toLocaleLowerCase("tr-TR");
     const source = String(req.query.source || "").trim();
     const filtered = collected.events.filter((event) => {
+      const eventDate = localDateOf(event.startAt);
+      if (eventDate < from || eventDate > to) return false;
       if (!matchesQuery(event, query)) return false;
       if (district && !String(event.district || "").toLocaleLowerCase("tr-TR").includes(district)) return false;
       if (category && !String(event.category || "").toLocaleLowerCase("tr-TR").includes(category)) return false;
@@ -233,7 +237,7 @@ app.get("/api/events/:fingerprint", async (req, res) => {
 });
 
 app.get("*", (_req, res) => {
-  res.sendFile(new URL("../public/index.html", import.meta.url).pathname);
+  res.sendFile(path.join(publicDirectory, "index.html"));
 });
 
 app.use((error, _req, res, _next) => {
