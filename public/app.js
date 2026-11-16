@@ -109,20 +109,20 @@ function buildCard(event) {
   return card;
 }
 
-function renderEvents(data) {
+function renderEvents(data, append = false) {
   const root = $("events");
-  root.replaceChildren();
+  if (!append) root.replaceChildren();
   makeSourceStrip(data.sources || []);
   $("result-title").textContent = data.total + " etkinlik";
   $("result-meta").textContent = data.from + " – " + data.to + " · Son veri kontrolü: " + formatDate(data.fetchedAt);
 
-  if (!data.events?.length) {
+  if (!data.events?.length && !append) {
     const empty = document.createElement("div");
     empty.className = "empty";
     empty.textContent = "Bu filtrelerle etkinlik bulunamadı. Kaynak ayarlarını /api/sources adresinden kontrol edebilir veya tarih aralığını genişletebilirsin.";
     root.append(empty);
   } else {
-    for (const event of data.events) root.append(buildCard(event));
+    for (const event of data.events || []) root.append(buildCard(event));
   }
   $("load-more").classList.toggle("hidden", data.page >= data.pages);
 }
@@ -159,11 +159,7 @@ async function loadEvents(append = false, refresh = false) {
     const data = await response.json();
     if (!response.ok) throw new Error(data.error || "Etkinlikler yüklenemedi.");
     state.total = data.total;
-    renderEvents(data);
-    if (append) {
-      const root = $("events");
-      for (const event of data.events || []) root.append(buildCard(event));
-    }
+    renderEvents(data, append);
     $("message").textContent = data.sources?.some((item) => item.status === "error")
       ? "Bazı kaynaklara şu an ulaşılamadı. Diğer kaynaklardan gelen sonuçlar gösteriliyor."
       : data.events?.length ? "" : "Henüz sonuç yok. API anahtarı gereken kaynaklar için .env ayarlarını tamamlayabilirsin.";
