@@ -39,27 +39,37 @@ app.use(express.json({ limit: "1mb" }));
 app.use(express.static(publicDirectory));
 
 function todayInIstanbul() {
-  return new Intl.DateTimeFormat("en-CA", {
+  const parts = new Intl.DateTimeFormat("en", {
     timeZone: "Europe/Istanbul",
     year: "numeric",
     month: "2-digit",
     day: "2-digit"
-  }).format(new Date());
+  }).formatToParts(new Date());
+  const part = (type) => parts.find((item) => item.type === type)?.value || "";
+  return part("year") + "-" + part("month") + "-" + part("day");
 }
 
 function plusDays(dateText, amount) {
-  const date = new Date(dateText + "T12:00:00+03:00");
-  date.setDate(date.getDate() + amount);
-  return new Intl.DateTimeFormat("en-CA", {
+  const date = new Date(dateText + "T00:00:00Z");
+  date.setUTCDate(date.getUTCDate() + amount);
+  return date.toISOString().slice(0, 10);
+}
+
+function isValidDateText(value) {
+  if (!/^\\d{4}-\\d{2}-\\d{2}$/.test(value)) return false;
+  const date = new Date(value + "T00:00:00Z");
+  return !Number.isNaN(date.getTime()) && date.toISOString().slice(0, 10) === value;
+}
+
+function localDateOf(value) {
+  const parts = new Intl.DateTimeFormat("en", {
     timeZone: "Europe/Istanbul",
     year: "numeric",
     month: "2-digit",
     day: "2-digit"
-  }).format(date);
-}
-
-function isValidDateText(value) {
-  return /^\d{4}-\d{2}-\d{2}$/.test(value) && !Number.isNaN(Date.parse(value + "T00:00:00Z"));
+  }).formatToParts(new Date(value));
+  const part = (type) => parts.find((item) => item.type === type)?.value || "";
+  return part("year") + "-" + part("month") + "-" + part("day");
 }
 
 async function fetchWithTimeout(url, options = {}) {
