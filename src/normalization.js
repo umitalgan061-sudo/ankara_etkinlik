@@ -22,10 +22,21 @@ export function stripHtml(value) {
 
 export function parseDate(value) {
   if (!value) return null;
-  const dateOnly = typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value);
-  const date = value instanceof Date
-    ? value
-    : new Date(dateOnly ? value + "T00:00:00+03:00" : value);
+  if (value instanceof Date) {
+    return Number.isNaN(value.getTime()) ? null : value.toISOString();
+  }
+
+  let dateText = String(value).trim();
+  const dateOnly = /^\d{4}-\d{2}-\d{2}$/.test(dateText);
+  if (/^\d{4}-\d{2}-\d{2}\s/.test(dateText)) {
+    dateText = dateText.replace(/\s+/, "T");
+  }
+
+  const hasTimezone = /(?:Z|[+-]\d{2}:?\d{2})$/i.test(dateText);
+  if (dateOnly) dateText += "T00:00:00+03:00";
+  else if (/^\d{4}-\d{2}-\d{2}T/.test(dateText) && !hasTimezone) dateText += "+03:00";
+
+  const date = new Date(dateText);
   return Number.isNaN(date.getTime()) ? null : date.toISOString();
 }
 
