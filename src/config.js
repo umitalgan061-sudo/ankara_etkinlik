@@ -20,7 +20,7 @@ function parseJsonArray(value, envName) {
 export const config = {
   port: numberFromEnv("PORT", 4000, 1, 65535),
   nodeEnv: process.env.NODE_ENV || "development",
-  corsOrigins: (process.env.CORS_ORIGIN || "http://localhost:4000")
+  corsOrigins: (process.env.CORS_ORIGIN || "http://localhost:4000,http://localhost:4173")
     .split(",").map((item) => item.trim()).filter(Boolean),
   cacheTtlSeconds: numberFromEnv("CACHE_TTL_SECONDS", 300, 0, 3600),
   sourceTimeoutMs: numberFromEnv("SOURCE_TIMEOUT_MS", 12000, 1000, 60000),
