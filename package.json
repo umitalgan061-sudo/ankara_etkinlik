@@ -10,7 +10,8 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "node --watch src/server.js",
-    "test": "node --test"
+    "test": "node --test",
+    "check": "node --check src/server.js && node --check src/config.js && node --check src/normalization.js && node --check src/sources/whatsmood.js && node --check src/sources/etkinlikio.js && node --check src/sources/biletsa.js && node --check src/sources/ticketmaster.js && node --check public/app.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
