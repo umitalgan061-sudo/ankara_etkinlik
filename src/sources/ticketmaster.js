@@ -6,8 +6,10 @@ export async function fetchTicketmaster({ from, to, fetchWithTimeout }) {
   const url = new URL("https://app.ticketmaster.com/discovery/v2/events.json");
   url.searchParams.set("city", "Ankara");
   url.searchParams.set("countryCode", "TR");
-  url.searchParams.set("startDateTime", from + "T00:00:00Z");
-  url.searchParams.set("endDateTime", to + "T23:59:59Z");
+  const startUtc = new Date(from + "T00:00:00+03:00").toISOString();
+  const endUtc = new Date(to + "T23:59:59+03:00").toISOString();
+  url.searchParams.set("startDateTime", startUtc);
+  url.searchParams.set("endDateTime", endUtc);
   url.searchParams.set("size", "100");
   url.searchParams.set("page", "0");
   url.searchParams.set("sort", "date,asc");
