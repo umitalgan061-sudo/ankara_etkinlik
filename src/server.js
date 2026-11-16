@@ -14,6 +14,7 @@ const requestCounters = new Map();
 
 app.disable("x-powered-by");
 app.use(helmet({
+  crossOriginResourcePolicy: { policy: "cross-origin" },
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
